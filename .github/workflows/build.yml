@@ -29,7 +29,8 @@ jobs:
         # Define App version to build
         version=$(grep -o "SmartGit:.*" README.md | cut -d ' ' -f2)
         echo "SmartGit version: $version"
-        version_dl=${version//./_}
+        version_dl=${version//./_} # Change . to _ in version
+        version_dl=$(echo "$version_dl" | cut -d '_' -f1-3) # Remove last _ and numuber in version
 
         # Get App
         #pushd ${SCRIPTPATH}
