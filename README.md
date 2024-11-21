@@ -2,7 +2,7 @@
 # SmartGit_AppImage
 
 ## Repository: https://github.com/ryuuzaki42/SmartGit_AppImage
-    SmartGit: 24.1
+    SmartGit: 24.1.0
 
 ---
 https://www.syntevo.com/smartgit/
