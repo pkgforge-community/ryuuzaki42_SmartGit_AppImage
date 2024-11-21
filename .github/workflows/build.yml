@@ -102,7 +102,7 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          file: "SmartGit*.AppImage; SmartGit*.md5"
+          file: "SmartGit*.AppImage; SmartGit*.zsync; SmartGit*.md5"
           #delete_file: "random-name-*.txt;random-*.txt"
           release_id: ${{ steps.create_release.outputs.id }}
           #overwrite: true
