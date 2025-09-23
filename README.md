@@ -2,7 +2,7 @@
 # SmartGit_AppImage
 
 ## Repository: https://github.com/ryuuzaki42/SmartGit_AppImage
-    SmartGit: 24.1.4
+    SmartGit: 24.1.5
 
 Need Java (JDK or JRE)
 
