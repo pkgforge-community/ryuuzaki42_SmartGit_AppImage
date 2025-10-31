@@ -35,8 +35,8 @@ jobs:
         # Get App
         #pushd ${SCRIPTPATH}
 
-        TarName="smartgit-linux-${version_dl}.tar.gz"
-        wget -q -c "https://www.syntevo.com/downloads/smartgit/${TarName}"
+        TarName="smartgit-${version_dl}-linux-amd64.tar.gz"
+        wget -q -c "https://download.smartgit.dev/smartgit/${TarName}"
 
         AppSrcDir="./smartgit"
         tar xf "${TarName}"
