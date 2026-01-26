@@ -5,10 +5,10 @@
     SmartGit: 25.1.110
 
 ---
-https://www.syntevo.com/smartgit/
+https://www.smartgit.dev/
 
 ---
 Based on: https://github.com/ecmu/smartgit.AppImage
 
 ---
-https://www.syntevo.com/smartgit/download/
+https://www.smartgit.dev/download/
