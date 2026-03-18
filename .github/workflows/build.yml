@@ -1,4 +1,4 @@
-name: AppImage Build
+name: Create new release
 
 on:
   push:
@@ -10,20 +10,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v6
-
     - name: install fuse and libfuse2
       run: sudo apt install fuse libfuse2
 
     - name: Executing AppImage build
       run: |
         set -x
-        pwd
-        ls -lah
+        pwd; ls -lah
         set -e #Exists on errors
-
         export APPDIR="AppDir/"
 
         # Define App version to build
@@ -31,9 +27,6 @@ jobs:
         echo "SmartGit version: $version"
         version_dl=${version//./_} # Change . to _ in version
         version_dl=$(echo "$version_dl" | cut -d '_' -f1-3) # Remove last _ and numuber in version
-
-        # Get App
-        #pushd ${SCRIPTPATH}
 
         TarName="smartgit-${version_dl}-linux-amd64.tar.gz"
         wget -q -c "https://download.smartgit.dev/smartgit/${TarName}"
@@ -44,12 +37,9 @@ jobs:
         # Copy to AppDir
         mkdir -p ${APPDIR}/usr
         cp -r $AppSrcDir/* "${APPDIR}/usr"
-
         cp "${APPDIR}/usr/bin/smartgit.svg" "${APPDIR}"
 
-        # Create app.desktop
-        cat << EOF > ${APPDIR}/smartgit.desktop
-        [Desktop Entry]
+        echo '[Desktop Entry]
         Name=SmartGit
         Keywords=git;
         Comment=Git-Client
@@ -59,8 +49,7 @@ jobs:
         StartupWMClass=SmartGit
         Exec=smartgit.sh %u
         MimeType=x-scheme-handler/git;x-scheme-handler/smartgit;
-        Icon=smartgit
-        EOF
+        Icon=smartgit' > ${APPDIR}/smartgit.desktop
 
         # Create AppRun script
         cat << EOF > ${APPDIR}/AppRun
@@ -73,7 +62,6 @@ jobs:
 
         chmod +x ${APPDIR}/AppRun
 
-        # Copy file README.md
         cp README.md AppDir/
 
         # build the AppImage
@@ -88,16 +76,12 @@ jobs:
     - name: List files and rename AppImage
       run: |
         set -x
-        pwd
-        ls -lah
+        pwd; ls -lah
 
         fileName=$(ls SmartGit*.AppImage)
         echo "fileName: $fileName"
-        #fileNameNew=$(echo "$fileName" | sed 's/.AppImage//')
-        #mv "$fileName" "${fileNameNew}-1_JB.AppImage"
-        #md5sum "${fileNameNew}-1_JB.AppImage" > "${fileNameNew}-1_JB.AppImage.md5"
         md5sum "$fileName" > "${fileName}.md5"
-        ls -lah
+        pwd; ls -lah
 
     # https://github.com/marketplace/actions/upload-to-github-release
     - uses: xresloader/upload-to-github-release@v1
