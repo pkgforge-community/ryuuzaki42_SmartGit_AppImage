@@ -50,8 +50,8 @@ jobs:
         export APPDIR="${APPDIR:-"$(dirname "$(realpath "$0")")"}"
         bash ${APPDIR}/usr/bin/smartgit.sh $@' > AppRun
         chmod +x AppRun
-
         pwd; ls -lah
+
         cd ../
         cp README.md AppDir/
 
