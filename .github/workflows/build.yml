@@ -63,7 +63,7 @@ jobs:
         wget -q "https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-$version_go_appimage-x86_64.AppImage" -O appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
 
-    - name: List files and rename AppImage
+    - name: Built the AppImage
       run: |
         set -x
         version=$(grep -o "SmartGit:.*" README.md | cut -d ' ' -f2)
