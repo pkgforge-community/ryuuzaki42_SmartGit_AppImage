@@ -34,10 +34,10 @@ jobs:
         wget -q -c "https://download.smartgit.dev/smartgit/${TarName}"
         tar xf "${TarName}"
 
-        # Copy to AppDir
         mkdir -p AppDir/usr/
         cp -r smartgit/* AppDir/usr/
-        ln -s AppDir/usr/bin/smartgit.svg AppDir/
+        cd AppDir/
+        ln -s usr/bin/smartgit.svg SmartGit.svg
 
         echo '[Desktop Entry]
         Name=SmartGit
@@ -49,21 +49,16 @@ jobs:
         StartupWMClass=SmartGit
         Exec=smartgit.sh %u
         MimeType=x-scheme-handler/git;x-scheme-handler/smartgit;
-        Icon=smartgit' > AppDir/smartgit.desktop
+        Icon=SmartGit' > smartgit.desktop
 
-        # Create AppRun script
-        cat << EOF > ${APPDIR}/AppRun
-        #!/bin/bash
-        export APPDIR="\${APPDIR:-"\$(dirname "\$(realpath "\$0")")"}" # Workaround to run extracted AppImage
-        #export PATH="\${APPDIR}/usr/bin":\$PATH
+        echo '#!/bin/bash
+        export APPDIR="\${APPDIR:-"\$(dirname "\$(realpath "\$0")")"}"
+        bash \${APPDIR}/usr/bin/smartgit.sh \$@' > AppRun
+        chmod +x AppRun
 
-        bash \${APPDIR}/usr/bin/smartgit.sh \$@
-        EOF
-
-        chmod +x AppDir/AppRun
-
-        cp README.md AppDir/
         pwd; ls -lah
+        cd ../
+        cp README.md AppDir/
 
         # build the AppImage
         #wget -q -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
@@ -77,14 +72,12 @@ jobs:
     - name: List files and rename AppImage
       run: |
         set -x
-        pwd; ls -lah
 
         fileName=$(ls SmartGit*.AppImage)
         echo "fileName: $fileName"
         md5sum "$fileName" > "${fileName}.md5"
         pwd; ls -lah
 
-    # https://github.com/marketplace/actions/upload-to-github-release
     - uses: xresloader/upload-to-github-release@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
