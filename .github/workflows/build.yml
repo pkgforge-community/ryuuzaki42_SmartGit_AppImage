@@ -21,7 +21,7 @@ jobs:
       run: |
         set -x
         pwd; ls -lah
-        set -e #Exists on errors
+
         export APPDIR="AppDir/"
 
         # Define App version to build
@@ -32,14 +32,12 @@ jobs:
 
         TarName="smartgit-${version_dl}-linux-amd64.tar.gz"
         wget -q -c "https://download.smartgit.dev/smartgit/${TarName}"
-
-        AppSrcDir="./smartgit"
         tar xf "${TarName}"
 
         # Copy to AppDir
-        mkdir -p ${APPDIR}/usr
-        cp -r $AppSrcDir/* "${APPDIR}/usr"
-        cp "${APPDIR}/usr/bin/smartgit.svg" "${APPDIR}"
+        mkdir -p AppDir/usr/
+        cp -r smartgit/* AppDir/usr/
+        ln -s AppDir/usr/bin/smartgit.svg AppDir/
 
         echo '[Desktop Entry]
         Name=SmartGit
@@ -51,7 +49,7 @@ jobs:
         StartupWMClass=SmartGit
         Exec=smartgit.sh %u
         MimeType=x-scheme-handler/git;x-scheme-handler/smartgit;
-        Icon=smartgit' > ${APPDIR}/smartgit.desktop
+        Icon=smartgit' > AppDir/smartgit.desktop
 
         # Create AppRun script
         cat << EOF > ${APPDIR}/AppRun
@@ -62,9 +60,10 @@ jobs:
         bash \${APPDIR}/usr/bin/smartgit.sh \$@
         EOF
 
-        chmod +x ${APPDIR}/AppRun
+        chmod +x AppDir/AppRun
 
         cp README.md AppDir/
+        pwd; ls -lah
 
         # build the AppImage
         #wget -q -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
@@ -73,7 +72,7 @@ jobs:
         wget -q "https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-$version_go_appimage-x86_64.AppImage" -O appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
 
-        ARCH=x86_64 VERSION="${version}-1_JB" ./appimagetool-x86_64.AppImage ${APPDIR}
+        ARCH=x86_64 VERSION="${version}-1_JB" ./appimagetool-x86_64.AppImage AppDir/
 
     - name: List files and rename AppImage
       run: |
