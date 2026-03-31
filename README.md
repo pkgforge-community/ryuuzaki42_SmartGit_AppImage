@@ -1,7 +1,7 @@
 
 # SmartGit_AppImage
 
-SmartGit is a Git GUI client with support for GitHub, Bitbucket, GitLab and Azure DevOps.
+SmartGit is a Git GUI client with support for GitHub, Bitbucket, GitLab and Azure DevOps
 
 https://www.smartgit.dev/
 
